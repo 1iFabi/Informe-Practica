@@ -1,0 +1,76 @@
+CREATE DATABASE Checklist
+use Checklist
+
+--- TABLA CATEGORIA (OPCIONES)
+CREATE TABLE Categoria_Falla(
+id_categoria INT PRIMARY KEY,
+nombre_categoria VARCHAR(50)
+);
+
+--[Categoria Falla]
+--1 -> Sin Falla
+--2 -> No aplica
+--3 -> Falla Leve
+--4 -> Falla Media
+--5 -> Falla Grave
+--6 -> Falla Invalidante
+
+
+-- TABLA EVALUACION FTU
+CREATE TABLE Evaluacion_FTU(
+id_ftu INT identity(1,1) PRIMARY KEY,
+conceptos_eval VARCHAR(150),
+id_categoria INT
+FOREIGN KEY (id_categoria)
+REFERENCES Categoria_Falla(id_categoria)
+);
+
+--TABLA EVALUACION ADE
+CREATE TABLE Evaluacion_ADE(
+id_ade  INT identity(1,1) PRIMARY KEY,
+conceptos_eval VARCHAR(150),
+id_categoria INT
+FOREIGN KEY (id_categoria)
+REFERENCES Categoria_Falla(id_categoria)
+);
+
+-- TABLA METRICAS
+CREATE TABLE Metricas(
+id_metricas INT identity(1,1) PRIMARY KEY,
+porcentaje_falla_ade FLOAT(5),
+porcentaje_falla_ftu FLOAT(5),
+id_ftu INT
+FOREIGN KEY(id_ftu)
+REFERENCES Evaluacion_FTU(id_ftu),
+id_ade INT
+FOREIGN KEY(id_ade)
+REFERENCES Evaluacion_ADE(id_ade)
+);
+
+--TABLA DATOS
+CREATE TABLE Datos(
+id_datos INT identity(1,1) PRIMARY KEY,
+Proyecto VARCHAR(150),
+Nombre_res VARCHAR(50),
+Nombre_rev VARCHAR(50),
+Fecha_inicio DATE,
+Fecha_fin DATE,
+Area VARCHAR(15)
+);
+
+-- TABLA CHECKLIST
+
+CREATE TABLE Checklist(
+id_checklist identity(1,1) PRIMARY KEY,
+RF_req VARCHAR(11),
+nombre_req VARCHAR(150),
+id_metricas INT
+FOREIGN KEY (id_metricas)
+REFERENCES Metricas(id_metricas),
+id_datos INT
+FOREIGN KEY (id_datos)
+REFERENCES Datos(id_datos)
+);
+
+
+
